@@ -1,31 +1,42 @@
 package com.patient_porta.controller;
 
 import com.patient_porta.entity.User;
+import com.patient_porta.repository.UserRepository;
+import com.patient_porta.service.PasswordResetService;
 import com.patient_porta.service.UserService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.patient_porta.repository.UserRepository;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final PasswordResetService passwordResetService;
+
     @PostMapping("/register-test")
     public ResponseEntity<?> registerTest() {
+        String username = "testuser";
+        String email = "test@example.com";
+
+        if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
+            return ResponseEntity.ok("EXISTS"); // đã tồn tại => không tạo nữa để tránh lỗi unique
+        }
+
         User user = new User();
-        user.setUsername("testuser");
-        user.setEmail("test@example.com");
-        user.setPassword_hash(passwordEncoder.encode("123456")); // ← quan trọng
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword_hash(passwordEncoder.encode("123456"));
         user.setRole(User.Role.PATIENT);
         user.setStatus(User.Status.ACTIVE);
+        user.setCreated_at(java.time.LocalDateTime.now());
+        user.setUpdated_at(java.time.LocalDateTime.now());
         userRepository.save(user);
         return ResponseEntity.ok("OK");
     }
@@ -36,4 +47,35 @@ public class UserController {
         return ResponseEntity.ok(authResponse);
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(
+            @RequestBody ForgotRequest req,
+            @RequestParam(value = "redirect", required = false) String redirectUrl
+    ) {
+        passwordResetService.createAndSendToken(req.getIdentifier(), redirectUrl);
+        return ResponseEntity.ok(new SimpleMessage("Nếu tài khoản tồn tại, liên kết đặt lại mật khẩu đã được gửi."));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetRequest req) {
+        passwordResetService.resetPassword(req.getToken(), req.getNewPassword());
+        return ResponseEntity.ok(new SimpleMessage("Đặt lại mật khẩu thành công"));
+    }
+
+    // ===== DTOs =====
+    @Data
+    public static class ForgotRequest {
+        private String identifier; // email hoặc username
+    }
+
+    @Data
+    public static class ResetRequest {
+        private String token;
+        private String newPassword;
+    }
+
+    @Data
+    public static class SimpleMessage {
+        private final String message;
+    }
 }

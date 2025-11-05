@@ -57,7 +57,9 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(restAuthenticationEntryPoint()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/auth/login", "/api/auth/register-test").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/forgot-password").permitAll()
+                        .requestMatchers("/api/auth/reset-password", "/api/auth/reset-password/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -69,7 +71,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        cfg.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(Arrays.asList("*"));
         cfg.setAllowCredentials(true);

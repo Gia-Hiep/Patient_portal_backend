@@ -33,7 +33,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String method = request.getMethod();
         return "OPTIONS".equalsIgnoreCase(method)
                 || path.equals("/error")
-                || path.startsWith("/api/auth/login");
+                || path.startsWith("/api/auth/login")
+                || path.startsWith("/api/auth/forgot-password")
+                || path.startsWith("/api/auth/reset-password");
+
     }
 
     @Override
