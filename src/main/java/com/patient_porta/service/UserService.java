@@ -21,7 +21,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final PatientProfileRepository profiles;
-    // ================== ĐĂNG NHẬP (đã có) ==================
+    // ================== ĐĂNG NHẬP ==================
     public AuthResponse login(AuthRequest request) {
         if (request == null || isBlank(request.getUsername()) || isBlank(request.getPassword())) {
             throw new BadCredentialsException("Thiếu username/email hoặc password");
@@ -143,6 +143,7 @@ public class UserService {
         public UserDTO getUser() { return user; }
         public void setUser(UserDTO user) { this.user = user; }
     }
+
     public static class AuthRequest {
         private String username;
         private String password;

@@ -1,5 +1,6 @@
 package com.patient_porta.controller;
 
+import com.patient_porta.dto.UserDTO;
 import com.patient_porta.entity.User;
 import com.patient_porta.repository.UserRepository;
 import com.patient_porta.service.PasswordResetService;
@@ -19,6 +20,12 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PasswordResetService passwordResetService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> register(@RequestBody UserService.RegisterRequest req) {
+        UserDTO dto = userService.register(req);
+        return ResponseEntity.status(201).body(dto);
+    }
 
     @PostMapping("/register-test")
     public ResponseEntity<?> registerTest() {
