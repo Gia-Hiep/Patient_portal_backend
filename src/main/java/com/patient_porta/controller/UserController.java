@@ -22,8 +22,8 @@ public class UserController {
 
     @PostMapping("/register-test")
     public ResponseEntity<?> registerTest() {
-        String username = "testuser";
-        String email = "test@example.com";
+        String username = "admin";
+        String email = "admin@example.com";
 
         if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
             return ResponseEntity.ok("EXISTS"); // đã tồn tại => không tạo nữa để tránh lỗi unique
@@ -33,14 +33,33 @@ public class UserController {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword_hash(passwordEncoder.encode("123456"));
-        user.setRole(User.Role.PATIENT);
+        user.setRole(User.Role.ADMIN);
         user.setStatus(User.Status.ACTIVE);
         user.setCreated_at(java.time.LocalDateTime.now());
         user.setUpdated_at(java.time.LocalDateTime.now());
         userRepository.save(user);
         return ResponseEntity.ok("OK");
     }
+    @PostMapping("/register-test-2")
+    public ResponseEntity<?> registerTest2() {
+        String username = "doctor";
+        String email = "doctor@example.com";
 
+        if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
+            return ResponseEntity.ok("EXISTS"); // đã tồn tại => không tạo nữa để tránh lỗi unique
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword_hash(passwordEncoder.encode("123456"));
+        user.setRole(User.Role.DOCTOR);
+        user.setStatus(User.Status.ACTIVE);
+        user.setCreated_at(java.time.LocalDateTime.now());
+        user.setUpdated_at(java.time.LocalDateTime.now());
+        userRepository.save(user);
+        return ResponseEntity.ok("OK");
+    }
     @PostMapping("/login")
     public ResponseEntity<UserService.AuthResponse> login(@RequestBody UserService.AuthRequest request) {
         UserService.AuthResponse authResponse = userService.login(request);
