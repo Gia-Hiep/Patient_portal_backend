@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -21,6 +22,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final PatientProfileRepository profiles;
+
     // ================== ĐĂNG NHẬP ==================
     public AuthResponse login(AuthRequest request) {
         if (request == null || isBlank(request.getUsername()) || isBlank(request.getPassword())) {
@@ -29,6 +31,7 @@ public class UserService {
 
         String id = request.getUsername().trim();
 
+        // Cho phép đăng nhập bằng email hoặc username
         User user = (id.contains("@")
                 ? userRepository.findByEmail(id)
                 : userRepository.findByUsername(id).or(() -> userRepository.findByEmail(id))
@@ -47,6 +50,7 @@ public class UserService {
     }
 
     // ================== ĐĂNG KÝ (THÊM MỚI) ==================
+    @Transactional
     public UserDTO register(RegisterRequest req) {
         if (req == null) {
             throw new IllegalArgumentException("Dữ liệu đăng ký không hợp lệ");
@@ -75,37 +79,46 @@ public class UserService {
             // Đăng ký bằng email
             email = rawId.toLowerCase();
             if (userRepository.findByEmail(email).isPresent()) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Email đã tồn tại trong hệ thống !");
+                // 409 CONFLICT để frontend dễ xử lý
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Email đã tồn tại trong hệ thống !"
+                );
             }
         } else {
-            // Đăng ký bằng SĐT: lưu phone + tạo email kỹ thuật để đảm bảo unique (nếu schema bắt buộc)
+            // Đăng ký bằng SĐT: lưu phone + tạo email kỹ thuật
             phone = rawId.replaceAll("\\s+", "");
             email = phone + "@phone.local";
             if (userRepository.findByEmail(email).isPresent()) {
-                throw new IllegalStateException("Số điện thoại đã được dùng để đăng ký");
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Số điện thoại đã được dùng để đăng ký"
+                );
             }
         }
 
-        // Sinh username: lấy phần trước @ hoặc p + timestamp
+        // Sinh username: lấy phần trước @
         String username = email.contains("@")
                 ? email.substring(0, email.indexOf('@'))
                 : "p" + System.currentTimeMillis();
 
-        // Tạo user mới
+        // 1) Tạo user
         User u = new User();
         u.setUsername(username);
         u.setEmail(email);
         u.setPhone(phone);
         u.setPassword_hash(passwordEncoder.encode(req.getPassword()));
-        u.setRole(User.Role.PATIENT);       // hoặc role mặc định khác nếu bạn muốn
+        u.setRole(User.Role.PATIENT);
         u.setStatus(User.Status.ACTIVE);
 
         u = userRepository.save(u);
 
+        // 2) Tạo patient profile gắn với user bằng @MapsId
         PatientProfile p = new PatientProfile();
-        p.setUserId(u.getId());
+        p.setUser(u);                    // QUAN TRỌNG: chỉ set user, KHÔNG set userId
         p.setFullName(req.getFullName());
         profiles.save(p);
+
         return mapToDTO(u);
     }
 
@@ -138,8 +151,10 @@ public class UserService {
             this.token = token;
             this.user = user;
         }
+
         public String getToken() { return token; }
         public void setToken(String token) { this.token = token; }
+
         public UserDTO getUser() { return user; }
         public void setUser(UserDTO user) { this.user = user; }
     }
@@ -150,6 +165,7 @@ public class UserService {
 
         public String getUsername() { return username; }
         public void setUsername(String username) { this.username = username; }
+
         public String getPassword() { return password; }
         public void setPassword(String password) { this.password = password; }
     }
@@ -176,7 +192,5 @@ public class UserService {
 
         public Boolean getAgreeTerms() { return agreeTerms; }
         public void setAgreeTerms(Boolean agreeTerms) { this.agreeTerms = agreeTerms; }
-
-
     }
 }
