@@ -1,31 +1,47 @@
 package com.patient_porta.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-@Entity @Table(name="patient_profiles")
-@Getter @Setter @NoArgsConstructor
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "patient_profiles")
+@Data
 public class PatientProfile {
+
     @Id
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long userId;
 
     @OneToOne
-    @JoinColumn(name="user_id", insertable=false, updatable=false)
+    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name="full_name", nullable=false, length=191)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name="insurance_number", length=64)
-    private String insuranceNumber;
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
-    @Column(name="address", length=255)
+    @Column(name = "sex")
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
+
+    @Column(name = "address")
     private String address;
 
-    @Column(name="emergency_contact_name", length=128)
+    @Column(name = "insurance_number")
+    private String insuranceNumber; // Mã BHYT
+
+    @Column(name = "emergency_contact_name")
     private String emergencyContactName;
 
-    @Column(name="emergency_contact_phone", length=32)
+    @Column(name = "emergency_contact_phone")
     private String emergencyContactPhone;
+
+    public enum Sex {
+        M, F, O
+    }
 }
