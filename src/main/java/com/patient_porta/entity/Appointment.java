@@ -20,13 +20,5 @@ public class Appointment {
     @Column(name = "scheduled_at", nullable = false)
     private LocalDateTime scheduledAt;
 
-    @Enumerated(EnumType.STRING)
-    private Status status; // CONFIRMED, COMPLETED, ...
 
-    @Column(name = "department_name")
-    private String departmentName; // nếu DB bạn chưa có, có thể bỏ hoặc map từ chỗ khác
-
-    public enum Status {
-        REQUESTED, CONFIRMED, COMPLETED, CANCELLED
-    }
 }
