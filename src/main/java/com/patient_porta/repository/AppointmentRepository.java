@@ -13,6 +13,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     // Lấy chi tiết 1 lần khám, nhưng phải thuộc về bệnh nhân có userId = ?
     Optional<Appointment> findByIdAndPatient_User_Id(Long id, Long userId);
-  
-     Appointment findTopByPatientIdOrderByScheduledAtDesc(Long patientId);
+
+    // Lấy lần khám mới nhất của 1 bệnh nhân (theo user_id)
+    Optional<Appointment> findTopByPatient_User_IdOrderByScheduledAtDesc(Long userId);
 }

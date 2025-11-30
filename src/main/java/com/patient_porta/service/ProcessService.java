@@ -17,17 +17,23 @@ public class ProcessService {
     private final AppointmentRepository appointmentRepository;
     private final CareFlowStageRepository careFlowStageRepository;
 
+    /**
+     * patientId ở đây chính là users.id của bệnh nhân
+     */
     public List<CareFlowStageDTO> getProcessForPatient(Long patientId) {
 
-        System.out.println("[PROCESS] → Tìm appointment mới nhất cho patientId=" + patientId);
+        System.out.println("[PROCESS] → Tìm appointment mới nhất cho patientUserId=" + patientId);
 
-        Appointment latest = appointmentRepository
-                .findTopByPatientIdOrderByScheduledAtDesc(patientId);
+        // dùng method mới, trả Optional
+        Optional<Appointment> optLatest =
+                appointmentRepository.findTopByPatient_User_IdOrderByScheduledAtDesc(patientId);
 
-        if (latest == null) {
+        if (optLatest.isEmpty()) {
             System.out.println("[PROCESS] → Không có appointment nào. Trả về list rỗng.");
             return Collections.emptyList();
         }
+
+        Appointment latest = optLatest.get();
 
         System.out.println("[PROCESS] → appointmentId = " + latest.getId()
                 + " | scheduled_at = " + latest.getScheduledAt()
