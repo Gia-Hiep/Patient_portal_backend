@@ -1,3 +1,4 @@
+
 package com.patient_porta.entity;
 
 import jakarta.persistence.*;
@@ -14,31 +15,20 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // patient_id -> patient_profiles.user_id
-    @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
-    private PatientProfile patient;
+    @Column(name = "patient_id", nullable = false)
+    private Long patientId;
 
-    // doctor_id -> doctor_profiles.user_id
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
-    private DoctorProfile doctor;
+    @Column(name = "doctor_id", nullable = false)
+    private Long doctorId;
 
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private MedicalService service;
+    @Column(name = "service_id")
+    private Long serviceId;
 
     @Column(name = "scheduled_at", nullable = false)
     private LocalDateTime scheduledAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private Status status;
+    @Column(nullable = false)
+    private String status; // REQUESTED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW
 
-    @Column(name = "notes")
     private String notes;
-
-    public enum Status {
-        REQUESTED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW
-    }
 }
