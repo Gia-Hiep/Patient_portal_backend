@@ -48,3 +48,4 @@ public class UserSettingsController {
         private boolean autoNotifyEnabled;
     }
 }
+    
