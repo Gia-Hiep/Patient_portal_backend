@@ -13,4 +13,5 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findByAppointment_IdAndDocTypeIn(Long appointmentId, List<DocType> types);
 
     Optional<Document> findByIdAndPatient_UserId(Long id, Long userId);
+
 }

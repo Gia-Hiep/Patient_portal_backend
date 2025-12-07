@@ -74,8 +74,7 @@ public class SecurityConfig {
 
         // Cho phép tất cả origin dạng http://localhost:xxxx
         cfg.setAllowedOriginPatterns(Arrays.asList("http://localhost:*"));
-
-        cfg.setExposedHeaders(Arrays.asList("Content-Disposition"));
+        cfg.setExposedHeaders(Arrays.asList("Content-Disposition", "Content-Type", "Content-Length"));
 
         cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         cfg.setAllowedHeaders(Arrays.asList("*"));
