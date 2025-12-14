@@ -76,6 +76,8 @@ public class SecurityConfig {
         cfg.setAllowedOriginPatterns(Arrays.asList("http://localhost:*"));
         cfg.setExposedHeaders(Arrays.asList("Content-Disposition", "Content-Type", "Content-Length"));
 
+        cfg.setExposedHeaders(Arrays.asList("Content-Disposition"));
+
         cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         cfg.setAllowedHeaders(Arrays.asList("*"));
         cfg.setAllowCredentials(true);
