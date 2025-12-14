@@ -1,4 +1,3 @@
-// src/main/java/com/patient_porta/service/BillingService.java
 package com.patient_porta.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
