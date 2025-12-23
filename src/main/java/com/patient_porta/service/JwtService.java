@@ -62,4 +62,8 @@ public class JwtService {
             return false;
         }
     }
+
+    public String extractUsername(String token) {
+        return getClaimsFromToken(token).getSubject();
+    }
 }
