@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 23, 2025 lúc 04:14 PM
+-- Thời gian đã tạo: Th12 24, 2025 lúc 06:51 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -67,9 +67,13 @@ CREATE TABLE `appointments` (
 --
 
 INSERT INTO `appointments` (`id`, `patient_id`, `doctor_id`, `service_id`, `scheduled_at`, `status`, `notes`, `created_at`, `updated_at`, `current_stage_id`) VALUES
-(24, 24, 3, NULL, '2025-12-23 20:27:20', 'IN_PROGRESS', 'Khám tổng quát – BN 24', '2025-12-23 13:27:20', '2025-12-23 14:58:07', 2),
+(24, 24, 3, NULL, '2025-12-23 20:27:20', 'IN_PROGRESS', 'Khám tổng quát – BN 24', '2025-12-23 13:27:20', '2025-12-24 16:22:36', 3),
 (25, 25, 3, NULL, '2025-12-23 20:27:20', 'WAITING', 'Chờ xét nghiệm – BN 25', '2025-12-23 13:27:20', '2025-12-23 15:00:03', 1),
-(26, 26, 3, NULL, '2025-12-23 20:27:20', 'WAITING', 'Chờ khám – BN 26', '2025-12-23 13:27:20', '2025-12-23 14:58:25', 3);
+(26, 26, 3, NULL, '2025-12-23 20:27:20', 'WAITING', 'Chờ khám – BN 26', '2025-12-23 13:27:20', '2025-12-23 14:58:25', 3),
+(40, 25, 3, NULL, '2025-12-24 23:25:27', 'COMPLETED', 'Xét nghiệm hoàn tất', '2025-12-24 16:25:27', '2025-12-24 16:25:27', 4),
+(41, 24, 3, NULL, '2025-12-24 23:27:37', 'COMPLETED', 'Xét nghiệm hoàn tất', '2025-12-24 16:27:37', '2025-12-24 16:27:37', 4),
+(42, 26, 3, NULL, '2025-12-24 23:27:45', 'COMPLETED', 'Xét nghiệm hoàn tất', '2025-12-24 16:27:45', '2025-12-24 17:08:04', 3),
+(46, 27, 3, NULL, '2025-12-25 00:48:50', 'COMPLETED', 'Xét nghiệm hoàn tất', '2025-12-24 17:48:50', '2025-12-24 17:50:02', 3);
 
 -- --------------------------------------------------------
 
@@ -206,7 +210,20 @@ INSERT INTO `notifications` (`id`, `user_id`, `type`, `title`, `body`, `status`,
 (13, 24, NULL, 'Nhắc tái khám', 'Bạn có lịch tái khám vào tuần tới.', 'READ', '2025-11-30 11:20:20', 'NONE', NULL, NULL, NULL, b'0'),
 (14, 24, NULL, 'Kết quả xét nghiệm', 'Có kết quả xét nghiệm máu mới.', 'READ', '2025-11-30 12:04:21', 'DOCUMENT', NULL, NULL, NULL, b'0'),
 (15, 24, NULL, 'Đến lượt khám', 'Bạn sắp đến lượt khám tại phòng Tai – Mũi – Họng.', 'READ', '2025-11-30 12:04:21', 'APPOINTMENT', 33, NULL, NULL, b'0'),
-(17, 24, NULL, 'Kết quả xét nghiệm', 'Có kết quả xét nghiệm máu mới.', 'READ', '2025-11-30 12:04:21', 'DOCUMENT', NULL, NULL, NULL, b'0');
+(17, 24, NULL, 'Kết quả xét nghiệm', 'Có kết quả xét nghiệm máu mới.', 'READ', '2025-11-30 12:04:21', 'DOCUMENT', NULL, NULL, NULL, b'0'),
+(18, 25, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:04:00', NULL, NULL, NULL, 25, b'1'),
+(19, 25, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:04:07', NULL, NULL, NULL, 25, b'1'),
+(20, 25, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:04:15', NULL, NULL, NULL, 25, b'1'),
+(21, 24, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:05:12', NULL, NULL, NULL, 24, b'1'),
+(22, 24, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:05:21', NULL, NULL, NULL, 24, b'1'),
+(23, 26, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:07:12', NULL, NULL, NULL, 26, b'1'),
+(24, 24, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:08:16', NULL, NULL, NULL, 24, b'1'),
+(25, 24, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:09:17', NULL, NULL, NULL, 24, b'1'),
+(26, 26, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:11:46', NULL, NULL, NULL, 26, b'1'),
+(27, 26, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:14:42', NULL, NULL, NULL, 26, b'1'),
+(28, 24, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:14:59', NULL, NULL, NULL, 24, b'1'),
+(29, 26, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:15:47', NULL, NULL, NULL, 26, b'1'),
+(30, 27, NULL, 'Kết quả xét nghiệm', 'Kết quả xét nghiệm của bạn đã sẵn sàng.', 'READ', '2025-12-24 17:50:09', NULL, NULL, NULL, 27, b'1');
 
 -- --------------------------------------------------------
 
@@ -277,7 +294,8 @@ INSERT INTO `patient_profiles` (`user_id`, `full_name`, `date_of_birth`, `sex`, 
 (23, 'Nguyen Van A', '2000-01-01', NULL, '123 Duong ABC, Quan 1, TP.HCM', 'BHYT123456789', 'Nguyen Van B', '0909123456', NULL),
 (24, 'vanhai123', NULL, NULL, '', '', '', '', NULL),
 (25, 'vanhai12333', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(26, 'vanhai1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(26, 'vanhai1', NULL, NULL, '', '', '', '', NULL),
+(27, 'vanhai1122', NULL, NULL, '', '', '', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -324,7 +342,18 @@ INSERT INTO `process_logs` (`id`, `appointment_id`, `old_status`, `new_status`, 
 (21, 25, NULL, NULL, 3, '2025-12-23 15:00:03', '2025-12-23 22:00:03.000000', 1),
 (22, 26, NULL, NULL, 3, '2025-12-23 15:00:11', '2025-12-23 22:00:11.000000', 3),
 (23, 24, NULL, NULL, 3, '2025-12-23 15:00:17', '2025-12-23 22:00:17.000000', 2),
-(24, 25, NULL, NULL, 3, '2025-12-23 15:08:27', '2025-12-23 22:08:27.000000', 1);
+(24, 25, NULL, NULL, 3, '2025-12-23 15:08:27', '2025-12-23 22:08:27.000000', 1),
+(25, 24, NULL, NULL, 3, '2025-12-24 10:54:50', '2025-12-24 17:54:50.000000', 2),
+(26, 24, NULL, NULL, 3, '2025-12-24 16:22:36', '2025-12-24 23:22:36.000000', 3),
+(27, 24, 'IN_PROGRESS', 'LAB_DONE', NULL, '2025-12-24 16:26:56', '2025-12-24 23:26:56.000000', 4),
+(28, 26, 'IN_PROGRESS', 'LAB_DONE', NULL, '2025-12-24 16:27:03', '2025-12-24 23:27:03.000000', 4),
+(29, 24, 'IN_PROGRESS', 'COMPLETED', 3, '2025-12-24 16:51:03', '2025-12-24 23:51:03.000000', 4),
+(30, 25, 'IN_PROGRESS', 'COMPLETED', 3, '2025-12-24 16:51:29', '2025-12-24 23:51:29.000000', 4),
+(31, 40, 'IN_PROGRESS', 'COMPLETED', 3, '2025-12-24 16:52:22', '2025-12-24 23:52:22.000000', 4),
+(32, 41, 'IN_PROGRESS', 'COMPLETED', 3, '2025-12-24 16:52:32', '2025-12-24 23:52:32.000000', 4),
+(33, 42, 'IN_PROGRESS', 'COMPLETED', 3, '2025-12-24 16:52:39', '2025-12-24 23:52:39.000000', 4),
+(34, 42, NULL, NULL, 3, '2025-12-24 17:08:04', '2025-12-25 00:08:04.000000', 3),
+(35, 46, NULL, NULL, 3, '2025-12-24 17:50:02', '2025-12-25 00:50:02.000000', 3);
 
 -- --------------------------------------------------------
 
@@ -396,7 +425,8 @@ INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password_hash`, `role`
 (23, '0541234211', 'aaa@example.com', '0909123456', '$2a$10$YTnyphaUA.3enUlbKox/0e6kH7UVMtX2RMuqeHPuUfc.jP1L7NWF6', 'PATIENT', 'ACTIVE', 1, '2025-11-18 12:31:36', '2025-11-18 14:38:26'),
 (24, 'vanhai12', 'vanhai12@gmail.com', '', '$2a$10$fQgv9Bd3w1AnkrAD.oQtlegu8plQojM3e4by69mdukN8tzcheBr7i', 'PATIENT', 'ACTIVE', 1, '2025-11-30 03:17:50', '2025-12-23 15:07:49'),
 (25, 'vanhai1233', 'vanhai1233@gmail.com', NULL, '$2a$10$56JTIj7XGbobVx.FDsMkJerQ5n8QDwhbb/aW2X508FFuWS8giT9xW', 'PATIENT', 'ACTIVE', 1, '2025-11-30 03:59:05', '2025-11-30 03:59:05'),
-(26, 'vanhai124', 'vanhai124@gmail.com', NULL, '$2a$10$ei.nMsWoK/eMP7IXBL9.CehHqKPa4yV5ilfBpZzuWJcxXNuFg/3vO', 'PATIENT', 'ACTIVE', 1, '2025-12-03 02:59:59', '2025-12-03 02:59:59');
+(26, 'vanhai124', 'vanhai124@gmail.com', '', '$2a$10$ei.nMsWoK/eMP7IXBL9.CehHqKPa4yV5ilfBpZzuWJcxXNuFg/3vO', 'PATIENT', 'ACTIVE', 1, '2025-12-03 02:59:59', '2025-12-24 17:06:33'),
+(27, 'vanhai1122', 'vanhai1122@gmail.com', '', '$2a$10$b4cSb4Xv9A9wJdPj9MxRnupwR6ITPesCGeTCgXviRrW4FtJ1U5p5G', 'PATIENT', 'ACTIVE', 1, '2025-12-24 17:19:17', '2025-12-24 17:42:47');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -515,7 +545,7 @@ ALTER TABLE `announcements`
 -- AUTO_INCREMENT cho bảng `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT cho bảng `care_flow_stages`
@@ -545,7 +575,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT cho bảng `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT cho bảng `password_reset_tokens`
@@ -557,7 +587,7 @@ ALTER TABLE `password_reset_tokens`
 -- AUTO_INCREMENT cho bảng `process_logs`
 --
 ALTER TABLE `process_logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT cho bảng `services`
@@ -569,7 +599,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

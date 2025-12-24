@@ -2,7 +2,6 @@
 package com.patient_porta.entity;
 
 import jakarta.persistence.*;
-<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,15 +12,6 @@ import java.time.LocalDateTime;
 @Table(name = "care_flow_stages")
 @Data
 @NoArgsConstructor
-=======
-import lombok.Data;
-
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "care_flow_stages")
-@Data
->>>>>>> 1e942ba8dd7557adf7e5387bce14233c8be0740a
 public class CareFlowStage {
 
     @Id
@@ -42,7 +32,6 @@ public class CareFlowStage {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-<<<<<<< HEAD
 
     public CareFlowStage(Long id, Integer stageOrder, String stageName) {
         this.id = id;
@@ -50,6 +39,3 @@ public class CareFlowStage {
         this.stageName = stageName;
     }
 }
-=======
-}
->>>>>>> 1e942ba8dd7557adf7e5387bce14233c8be0740a
