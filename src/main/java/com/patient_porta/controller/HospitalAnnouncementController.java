@@ -6,17 +6,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+//@RestController
 @RequestMapping("/api/announcements")
-public class AnnouncementController {
+public class HospitalAnnouncementController {
 
     private final HospitalAnnouncementService service;
 
-    public AnnouncementController(HospitalAnnouncementService service) {
+    public HospitalAnnouncementController(HospitalAnnouncementService service) {
         this.service = service;
     }
 
-    // PATIENT: chỉ xem
     @GetMapping
     public List<HospitalAnnouncement> list() {
         return service.getAll();
