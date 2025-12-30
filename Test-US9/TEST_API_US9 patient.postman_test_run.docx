@@ -1,0 +1,96 @@
+{
+	"id": "671557e9-c04b-46e4-a070-004901d2677a",
+	"name": "TEST_API_US9 patient",
+	"timestamp": "2025-12-30T02:55:11.397Z",
+	"collection_id": "51002626-92c7b08d-2b91-4d4b-ab65-a82589b73a2f",
+	"folder_id": 0,
+	"environment_id": "51002626-94dd01dd-966b-4ce4-a6b1-8fb5e39f9478",
+	"totalPass": 3,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-12-30T02:55:10.420Z",
+	"totalFail": 1,
+	"results": [
+		{
+			"id": "cc969432-af34-42c1-a29b-f5b8fb43b0fd",
+			"name": "Appointments patient",
+			"url": "http://localhost:8080/api/doctor/appointments",
+			"time": 378,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"Patient gọi API doctor - Phải bị 403 Forbidden": true,
+				"Message lỗi phân quyền": false
+			},
+			"testPassFailCounts": {
+				"Patient gọi API doctor - Phải bị 403 Forbidden": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message lỗi phân quyền": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				378
+			],
+			"allTests": [
+				{
+					"Patient gọi API doctor - Phải bị 403 Forbidden": true,
+					"Message lỗi phân quyền": false
+				}
+			]
+		},
+		{
+			"id": "860fe62f-98bf-49a7-8af3-a08d1133f7ea",
+			"name": "Login patient",
+			"url": "http://localhost:8080/api/auth/login",
+			"time": 81,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login patient thành công": true,
+				"Lưu token patient": true
+			},
+			"testPassFailCounts": {
+				"Login patient thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Lưu token patient": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				81
+			],
+			"allTests": [
+				{
+					"Login patient thành công": true,
+					"Lưu token patient": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 459,
+	"collection": {
+		"requests": [
+			{
+				"id": "cc969432-af34-42c1-a29b-f5b8fb43b0fd",
+				"method": "GET"
+			},
+			{
+				"id": "860fe62f-98bf-49a7-8af3-a08d1133f7ea",
+				"method": "POST"
+			}
+		]
+	}
+}
