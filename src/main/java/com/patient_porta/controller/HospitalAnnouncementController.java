@@ -1,13 +1,16 @@
 package com.patient_porta.controller;
 
+
+import com.patient_porta.entity.AnnouncementType;
 import com.patient_porta.entity.HospitalAnnouncement;
 import com.patient_porta.service.HospitalAnnouncementService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RestController
-@RequestMapping("/api/announcements")
+@RestController
+@RequestMapping("/api/public/announcements")
+
 public class HospitalAnnouncementController {
 
     private final HospitalAnnouncementService service;
@@ -17,7 +20,8 @@ public class HospitalAnnouncementController {
     }
 
     @GetMapping
-    public List<HospitalAnnouncement> list() {
-        return service.getAll();
+    public List<HospitalAnnouncement> getAnnouncements(
+            @RequestParam(required = false) AnnouncementType type) {
+        return service.getForPatient(type);
     }
 }

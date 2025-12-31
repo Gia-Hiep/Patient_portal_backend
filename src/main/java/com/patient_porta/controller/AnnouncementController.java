@@ -1,5 +1,6 @@
 package com.patient_porta.controller;
 
+import com.patient_porta.entity.AnnouncementType;
 import com.patient_porta.entity.HospitalAnnouncement;
 import com.patient_porta.service.HospitalAnnouncementService;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,11 @@ public class AnnouncementController {
         this.service = service;
     }
 
-    // PATIENT: chỉ xem
+    // PATIENT: chỉ xem + sắp xếp mới nhất + optional filter type
     @GetMapping
-    public List<HospitalAnnouncement> list() {
-        return service.getAll();
+    public List<HospitalAnnouncement> list(
+            @RequestParam(required = false) AnnouncementType type
+    ) {
+        return service.getForPatient(type);
     }
 }
