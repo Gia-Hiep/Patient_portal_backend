@@ -44,11 +44,16 @@ public class AdminUserService {
     public AdminUserDTO create(AdminUserCreateRequest req) {
         requireAdmin(me());
 
-        if (userRepo.existsByUsername(req.getUsername())
-                || userRepo.existsByEmail(req.getEmail())) {
+        if (userRepo.findByEmail(req.getEmail()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "Tài khoản đã tồn tại trong hệ thống."
+                    "Email đã tồn tại trong hệ thống."
+            );
+        }
+        if(userRepo.findByUsername(req.getUsername()).isPresent()){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "User name đã tồn tại. "
             );
         }
 
