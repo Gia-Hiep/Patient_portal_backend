@@ -1,0 +1,168 @@
+{
+	"id": "622e199e-07e6-499a-9024-2d817654f578",
+	"name": "TEST_API-US9 doctor with patient",
+	"timestamp": "2025-12-30T03:14:00.800Z",
+	"collection_id": "51002626-7b7f15ad-2c43-4011-a43e-7aac2635c2c7",
+	"folder_id": 0,
+	"environment_id": "51002626-94dd01dd-966b-4ce4-a6b1-8fb5e39f9478",
+	"totalPass": 5,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-12-30T03:13:59.744Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "385d10e3-97fb-4723-8790-3fe9ef603ca9",
+			"name": "Login doctor1",
+			"url": "http://localhost:8080/api/auth/login",
+			"time": 75,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login doctor thành công": true,
+				"Lưu token doctor": true
+			},
+			"testPassFailCounts": {
+				"Login doctor thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Lưu token doctor": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				75
+			],
+			"allTests": [
+				{
+					"Login doctor thành công": true,
+					"Lưu token doctor": true
+				}
+			]
+		},
+		{
+			"id": "fb821bc9-34dd-43ab-a99e-7fee550f5a55",
+			"name": "Get Doctor 01 Appointments",
+			"url": "http://localhost:8080/api/doctor/appointments",
+			"time": 32,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Lấy danh sách bệnh nhân thành công - Status 200": true,
+				"Response là array": true,
+				"Nếu có bệnh nhân thì có cấu trúc đúng": true
+			},
+			"testPassFailCounts": {
+				"Lấy danh sách bệnh nhân thành công - Status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response là array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Nếu có bệnh nhân thì có cấu trúc đúng": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				32
+			],
+			"allTests": [
+				{
+					"Lấy danh sách bệnh nhân thành công - Status 200": true,
+					"Response là array": true,
+					"Nếu có bệnh nhân thì có cấu trúc đúng": true
+				}
+			]
+		},
+		{
+			"id": "a6f5a885-b0e5-45b4-8147-974b4dc5e236",
+			"name": "Scrum87 with doctor1",
+			"url": "http://localhost:8080/api/doctor/appointments?status=WAITING",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				47
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "ad0f5a6d-c5f9-424f-ab17-a48f5b41e368",
+			"name": "Scrum88 with doctor1",
+			"url": "http://localhost:8080/api/doctor/appointments?date=2025-12-30",
+			"time": 43,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				43
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "e4c9aa9e-17d9-41db-b6d0-93c150040cfc",
+			"name": "GET Appointments no token",
+			"url": "http://localhost:8080/api/doctor/appointments",
+			"time": 3,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				3
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 200,
+	"collection": {
+		"requests": [
+			{
+				"id": "385d10e3-97fb-4723-8790-3fe9ef603ca9",
+				"method": "POST"
+			},
+			{
+				"id": "fb821bc9-34dd-43ab-a99e-7fee550f5a55",
+				"method": "GET"
+			},
+			{
+				"id": "a6f5a885-b0e5-45b4-8147-974b4dc5e236",
+				"method": "GET"
+			},
+			{
+				"id": "ad0f5a6d-c5f9-424f-ab17-a48f5b41e368",
+				"method": "GET"
+			},
+			{
+				"id": "e4c9aa9e-17d9-41db-b6d0-93c150040cfc",
+				"method": "GET"
+			}
+		]
+	}
+}
