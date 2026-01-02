@@ -1,0 +1,151 @@
+{
+	"id": "f8ac7225-39c4-4808-8ce5-2b0faa375cdc",
+	"name": "TestAPI-SCRUM56",
+	"timestamp": "2026-01-02T02:21:45.699Z",
+	"collection_id": "51002626-a8f282e7-b8b9-4e3b-a8e6-4a0880bbcb29",
+	"folder_id": 0,
+	"environment_id": "51002626-94dd01dd-966b-4ce4-a6b1-8fb5e39f9478",
+	"totalPass": 9,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-01-02T02:21:44.376Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "dc1c5b6e-7743-4d92-892f-d7c38bb69a0b",
+			"name": "Login patient",
+			"url": "http://localhost:8080/api/auth/login",
+			"time": 175,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login thành công - Status 200": true,
+				"Response có token": true,
+				"Lưu token vào biến môi trường": true,
+				"Response có thông tin user": true
+			},
+			"testPassFailCounts": {
+				"Login thành công - Status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response có token": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Lưu token vào biến môi trường": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response có thông tin user": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				175
+			],
+			"allTests": [
+				{
+					"Login thành công - Status 200": true,
+					"Response có token": true,
+					"Lưu token vào biến môi trường": true,
+					"Response có thông tin user": true
+				}
+			]
+		},
+		{
+			"id": "3301cd45-f030-4844-a5ec-7aaa498f8346",
+			"name": "GET Notifications",
+			"url": "http://localhost:8080/api/notifications",
+			"time": 33,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Lấy danh sách thông báo thành công - Status 200": true,
+				"Response là một array": true,
+				"Nếu có thông báo thì cấu trúc đúng": true
+			},
+			"testPassFailCounts": {
+				"Lấy danh sách thông báo thành công - Status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response là một array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Nếu có thông báo thì cấu trúc đúng": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				33
+			],
+			"allTests": [
+				{
+					"Lấy danh sách thông báo thành công - Status 200": true,
+					"Response là một array": true,
+					"Nếu có thông báo thì cấu trúc đúng": true
+				}
+			]
+		},
+		{
+			"id": "de50796a-bcca-4136-83dd-273f5742878b",
+			"name": "GET Notifications-no token",
+			"url": "http://localhost:8080/api/notifications",
+			"time": 17,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Không có token phải bị 401 Unauthorized": true,
+				"Message lỗi xác thực": true
+			},
+			"testPassFailCounts": {
+				"Không có token phải bị 401 Unauthorized": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message lỗi xác thực": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Không có token phải bị 401 Unauthorized": true,
+					"Message lỗi xác thực": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 225,
+	"collection": {
+		"requests": [
+			{
+				"id": "dc1c5b6e-7743-4d92-892f-d7c38bb69a0b",
+				"method": "POST"
+			},
+			{
+				"id": "3301cd45-f030-4844-a5ec-7aaa498f8346",
+				"method": "GET"
+			},
+			{
+				"id": "de50796a-bcca-4136-83dd-273f5742878b",
+				"method": "GET"
+			}
+		]
+	}
+}

@@ -51,7 +51,7 @@ public class User {
         ACTIVE, LOCKED, DISABLED
     }
 
-    @Column(name = "auto_notification_enabled", nullable = false)
-    private boolean autoNotificationEnabled = true;
+    @Column(name = "auto_notify_enabled")
+    private Boolean autoNotifyEnabled = true;
 
 }
