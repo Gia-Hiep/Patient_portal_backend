@@ -53,20 +53,59 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // ======================
+                // STATELESS + CORS
+                // ======================
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
+
+                // ======================
+                // EXCEPTION
+                // ======================
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(restAuthenticationEntryPoint()))
+
+                // ======================
+                // AUTHORIZATION
+                // ======================
                 .authorizeHttpRequests(auth -> auth
+
+                        // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Public
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/error").permitAll()
+
+                        // 🔔 USER SETTINGS
+                        .requestMatchers("/api/settings/**").authenticated()
+
+                        // 👤 PROFILE
+                        .requestMatchers("/api/profile/**").authenticated()
+
+                        // 🧍 PATIENT – xem tiến trình
+                        .requestMatchers(HttpMethod.GET, "/api/process/**")
+                        .hasAnyRole("PATIENT", "DOCTOR")
+
+                        // 👨‍⚕️ DOCTOR – cập nhật tiến trình
+                        .requestMatchers("/api/examination-progress/**")
+                        .hasRole("DOCTOR")
+
+                        // 🔔 NOTIFICATION
+                        .requestMatchers("/api/autonotification/**").authenticated()
+
+                        // FALLBACK
                         .anyRequest().authenticated()
                 )
+
+                // ======================
+                // JWT FILTER
+                // ======================
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

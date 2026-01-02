@@ -50,4 +50,8 @@ public class User {
     public enum Status {
         ACTIVE, LOCKED, DISABLED
     }
+
+    @Column(name = "auto_notification_enabled", nullable = false)
+    private boolean autoNotificationEnabled = true;
+
 }

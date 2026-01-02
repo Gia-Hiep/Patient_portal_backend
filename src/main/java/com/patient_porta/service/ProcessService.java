@@ -17,43 +17,98 @@ public class ProcessService {
     private final AppointmentRepository appointmentRepository;
     private final CareFlowStageRepository careFlowStageRepository;
 
-    /**
-     * patientId ở đây chính là users.id của bệnh nhân
-     */
+    // =================================================
+    // 👤 PATIENT: XEM TIẾN TRÌNH KHÁM
+    // =================================================
     public List<CareFlowStageDTO> getProcessForPatient(Long patientId) {
 
-        System.out.println("[PROCESS] → Tìm appointment mới nhất cho patientUserId=" + patientId);
+        Appointment latest =
+                appointmentRepository.findTopByPatientIdOrderByScheduledAtDesc(patientId);
 
-        // dùng method mới, trả Optional
-        Optional<Appointment> optLatest =
-                appointmentRepository.findTopByPatient_User_IdOrderByScheduledAtDesc(patientId);
+        if (latest == null) return Collections.emptyList();
 
-        if (optLatest.isEmpty()) {
-            System.out.println("[PROCESS] → Không có appointment nào. Trả về list rỗng.");
-            return Collections.emptyList();
+        return buildProcess(latest.getCurrentStageId());
+    }
+
+    // =================================================
+    // 👨‍⚕️ DOCTOR: XEM TIẾN TRÌNH CÁC BỆNH NHÂN
+    // =================================================
+    public List<Map<String, Object>> getAllForDoctor(Long doctorId) {
+
+        List<Appointment> appointments =
+                appointmentRepository.findByDoctorIdOrderByScheduledAtAsc(doctorId);
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Appointment appt : appointments) {
+
+            Map<String, Object> row = new HashMap<>();
+            row.put("appointmentId", appt.getId());
+            row.put("patientId", appt.getPatientId());
+            row.put("scheduledAt", appt.getScheduledAt());
+            row.put("currentStageId", appt.getCurrentStageId());
+            row.put("stages", buildProcess(appt.getCurrentStageId()));
+
+            result.add(row);
         }
 
-        Appointment latest = optLatest.get();
+        return result;
+    }
 
-        System.out.println("[PROCESS] → appointmentId = " + latest.getId()
-                + " | scheduled_at = " + latest.getScheduledAt()
-                + " | status = " + latest.getStatus());
+    // =================================================
+    // 🧠 CORE LOGIC – SINGLE SOURCE OF TRUTH
+    // =================================================
+    private List<CareFlowStageDTO> buildProcess(Long currentStageId) {
 
         List<CareFlowStage> stages =
-                careFlowStageRepository.findByAppointmentIdOrderByStageOrder(latest.getId());
+                careFlowStageRepository.findAllByOrderByStageOrderAsc();
 
-        System.out.println("[PROCESS] → Tổng số stages = " + stages.size());
+        Integer currentStageOrder = null;
+        Integer maxStageOrder =
+                stages.stream()
+                        .map(CareFlowStage::getStageOrder)
+                        .max(Integer::compareTo)
+                        .orElse(null);
+
+        if (currentStageId != null) {
+            currentStageOrder = stages.stream()
+                    .filter(s -> s.getId().equals(currentStageId))
+                    .map(CareFlowStage::getStageOrder)
+                    .findFirst()
+                    .orElse(null);
+        }
 
         List<CareFlowStageDTO> result = new ArrayList<>();
 
         for (CareFlowStage s : stages) {
-            System.out.println("[PROCESS] → Stage " + s.getStageOrder() + ": "
-                    + s.getStageName() + " | " + s.getStatus());
+
+            String status;
+
+            if (currentStageOrder == null) {
+                status = "NOT_STARTED";
+            }
+            else if (s.getStageOrder() < currentStageOrder) {
+                status = "DONE";
+            }
+            else if (s.getStageOrder().equals(currentStageOrder)) {
+
+                // ✅ STAGE CUỐI → DONE
+                if (Objects.equals(currentStageOrder, maxStageOrder)) {
+                    status = "DONE";
+                }
+                // ⏳ ĐANG XỬ LÝ
+                else {
+                    status = "IN_PROGRESS";
+                }
+            }
+            else {
+                status = "NOT_STARTED";
+            }
 
             CareFlowStageDTO dto = new CareFlowStageDTO();
             dto.setStageOrder(s.getStageOrder());
             dto.setStageName(s.getStageName());
-            dto.setStatus(s.getStatus());
+            dto.setStatus(status);
 
             result.add(dto);
         }

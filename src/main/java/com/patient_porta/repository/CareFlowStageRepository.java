@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface CareFlowStageRepository extends JpaRepository<CareFlowStage, Long> {
 
+
+    List<CareFlowStage> findAllByOrderByStageOrderAsc();
     List<CareFlowStage> findByAppointmentIdOrderByStageOrder(Long appointmentId);
 }
