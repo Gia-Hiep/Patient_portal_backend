@@ -83,7 +83,9 @@ class ChatServiceTest {
         User me = user(1L, "pat1", User.Role.PATIENT);
         when(userRepo.findByUsername("pat1")).thenReturn(Optional.of(me));
 
-        when(appointmentRepo.findDistinctDoctorIdsByPatientId(1L)).thenReturn(List.of(101L, 102L));
+        // ✅ FIX: repo method mới
+        when(appointmentRepo.findDistinctDoctorIdsByPatientUserId(1L))
+                .thenReturn(List.of(101L, 102L));
 
         // giả lập DoctorProfile entity có getUserId(), getFullName()
         var dp1 = mock(com.patient_porta.entity.DoctorProfile.class);
@@ -104,6 +106,9 @@ class ChatServiceTest {
         assertEquals("Dr A", out.get(0).getFullName());
         assertEquals(102L, out.get(1).getId());
         assertEquals("Dr B", out.get(1).getFullName());
+
+        // ✅ verify đúng method mới
+        verify(appointmentRepo).findDistinctDoctorIdsByPatientUserId(1L);
     }
 
     @Test

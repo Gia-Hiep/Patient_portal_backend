@@ -81,7 +81,9 @@ public class ChatService {
         User u = me();
         requireRole(u, User.Role.PATIENT);
 
-        List<Long> ids = appointmentRepo.findDistinctDoctorIdsByPatientId(u.getId());
+        // ✅ FIX: đúng method + đúng key (patientUserId)
+        List<Long> ids = appointmentRepo.findDistinctDoctorIdsByPatientUserId(u.getId());
+
         return ids.stream()
                 .map(id -> doctorProfileRepo.findById(id).orElse(null))
                 .filter(Objects::nonNull)

@@ -23,7 +23,7 @@ public class NotificationEventService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // nếu chưa thêm cột autoNotifyEnabled thì tạm thời luôn trả true
-        Boolean enabled = user.getAutoNotifyEnabled();
+        Boolean enabled = user.isAutoNotificationEnabled();
         return enabled == null || enabled;
     }
 

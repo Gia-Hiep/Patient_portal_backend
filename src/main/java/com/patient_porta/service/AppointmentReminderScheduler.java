@@ -23,9 +23,6 @@ public class AppointmentReminderScheduler {
     private final NotificationEventService notificationEventService;
     private final UserNotificationRepository notificationRepository;
 
-    /**
-     * Chạy mỗi 1 phút, tìm các lịch khám còn ~30 phút nữa.
-     */
     @Scheduled(fixedDelay = 60_000)
     public void sendUpcomingReminders() {
         LocalDateTime now = LocalDateTime.now();
@@ -43,9 +40,9 @@ public class AppointmentReminderScheduler {
                     );
             if (exists) continue;
 
-            String dept = appt.getDepartmentName() != null ? appt.getDepartmentName() : "khám bệnh";
+            String dept = "khám bệnh";
             notificationEventService.notifyUpcomingAppointment(
-                    appt.getPatientId(),
+                    appt.getPatient().getUserId(),
                     appt.getId(),
                     appt.getScheduledAt(),
                     dept

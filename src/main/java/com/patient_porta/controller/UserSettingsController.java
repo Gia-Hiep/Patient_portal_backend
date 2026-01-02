@@ -27,9 +27,7 @@ public class UserSettingsController {
     public ResponseEntity<NotificationSettingsDTO> getNotificationSettings() {
         User user = getCurrentUser();
         NotificationSettingsDTO dto = new NotificationSettingsDTO();
-        dto.setAutoNotifyEnabled(
-                user.getAutoNotifyEnabled() == null || user.getAutoNotifyEnabled()
-        );
+        dto.setAutoNotifyEnabled(user.isAutoNotificationEnabled());
         return ResponseEntity.ok(dto);
     }
 
@@ -38,7 +36,7 @@ public class UserSettingsController {
             @RequestBody NotificationSettingsDTO dto
     ) {
         User user = getCurrentUser();
-        user.setAutoNotifyEnabled(dto.isAutoNotifyEnabled());
+        user.setAutoNotificationEnabled(dto.isAutoNotifyEnabled());
         userRepository.save(user);
         return ResponseEntity.ok(dto);
     }

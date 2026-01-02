@@ -17,26 +17,23 @@ public class ProcessService {
     private final AppointmentRepository appointmentRepository;
     private final CareFlowStageRepository careFlowStageRepository;
 
-    // =================================================
-    // 👤 PATIENT: XEM TIẾN TRÌNH KHÁM
-    // =================================================
+    // patientId ở đây thực tế là userId của bệnh nhân (PatientProfile.userId)
     public List<CareFlowStageDTO> getProcessForPatient(Long patientId) {
 
-        Appointment latest =
-                appointmentRepository.findTopByPatientIdOrderByScheduledAtDesc(patientId);
+        Appointment latest = appointmentRepository
+                .findTopByPatient_UserIdOrderByScheduledAtDesc(patientId)
+                .orElse(null);
 
         if (latest == null) return Collections.emptyList();
 
         return buildProcess(latest.getCurrentStageId());
     }
 
-    // =================================================
-    // 👨‍⚕️ DOCTOR: XEM TIẾN TRÌNH CÁC BỆNH NHÂN
-    // =================================================
+    // doctorId ở đây thực tế là userId của bác sĩ (DoctorProfile.userId)
     public List<Map<String, Object>> getAllForDoctor(Long doctorId) {
 
         List<Appointment> appointments =
-                appointmentRepository.findByDoctorIdOrderByScheduledAtAsc(doctorId);
+                appointmentRepository.findByDoctor_UserIdOrderByScheduledAtAsc(doctorId);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -44,7 +41,7 @@ public class ProcessService {
 
             Map<String, Object> row = new HashMap<>();
             row.put("appointmentId", appt.getId());
-            row.put("patientId", appt.getPatientId());
+            row.put("patientId", appt.getPatient().getUserId());
             row.put("scheduledAt", appt.getScheduledAt());
             row.put("currentStageId", appt.getCurrentStageId());
             row.put("stages", buildProcess(appt.getCurrentStageId()));
@@ -55,9 +52,6 @@ public class ProcessService {
         return result;
     }
 
-    // =================================================
-    // 🧠 CORE LOGIC – SINGLE SOURCE OF TRUTH
-    // =================================================
     private List<CareFlowStageDTO> buildProcess(Long currentStageId) {
 
         List<CareFlowStage> stages =
@@ -72,7 +66,7 @@ public class ProcessService {
 
         if (currentStageId != null) {
             currentStageOrder = stages.stream()
-                    .filter(s -> s.getId().equals(currentStageId))
+                    .filter(s -> Objects.equals(s.getId(), currentStageId))
                     .map(CareFlowStage::getStageOrder)
                     .findFirst()
                     .orElse(null);
@@ -86,22 +80,16 @@ public class ProcessService {
 
             if (currentStageOrder == null) {
                 status = "NOT_STARTED";
-            }
-            else if (s.getStageOrder() < currentStageOrder) {
+            } else if (s.getStageOrder() < currentStageOrder) {
                 status = "DONE";
-            }
-            else if (s.getStageOrder().equals(currentStageOrder)) {
-
+            } else if (s.getStageOrder().equals(currentStageOrder)) {
                 // ✅ STAGE CUỐI → DONE
                 if (Objects.equals(currentStageOrder, maxStageOrder)) {
                     status = "DONE";
-                }
-                // ⏳ ĐANG XỬ LÝ
-                else {
+                } else {
                     status = "IN_PROGRESS";
                 }
-            }
-            else {
+            } else {
                 status = "NOT_STARTED";
             }
 
