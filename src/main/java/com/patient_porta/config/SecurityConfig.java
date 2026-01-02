@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -51,20 +53,59 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // ======================
+                // STATELESS + CORS
+                // ======================
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
+
+                // ======================
+                // EXCEPTION
+                // ======================
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(restAuthenticationEntryPoint()))
+
+                // ======================
+                // AUTHORIZATION
+                // ======================
                 .authorizeHttpRequests(auth -> auth
+
+                        // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Public
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/error").permitAll()
+
+                        // 🔔 USER SETTINGS
+                        .requestMatchers("/api/settings/**").authenticated()
+
+                        // 👤 PROFILE
+                        .requestMatchers("/api/profile/**").authenticated()
+
+                        // 🧍 PATIENT – xem tiến trình
+                        .requestMatchers(HttpMethod.GET, "/api/process/**")
+                        .hasAnyRole("PATIENT", "DOCTOR")
+
+                        // 👨‍⚕️ DOCTOR – cập nhật tiến trình
+                        .requestMatchers("/api/examination-progress/**")
+                        .hasRole("DOCTOR")
+
+                        // 🔔 NOTIFICATION
+                        .requestMatchers("/api/autonotification/**").authenticated()
+
+                        // FALLBACK
                         .anyRequest().authenticated()
                 )
+
+                // ======================
+                // JWT FILTER
+                // ======================
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -72,6 +113,8 @@ public class SecurityConfig {
 
         // Cho phép tất cả origin dạng http://localhost:xxxx
         cfg.setAllowedOriginPatterns(Arrays.asList("http://localhost:*"));
+        cfg.setExposedHeaders(Arrays.asList("Content-Disposition", "Content-Type", "Content-Length"));
+        cfg.setExposedHeaders(Arrays.asList("Content-Disposition"));
 
         cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         cfg.setAllowedHeaders(Arrays.asList("*"));
