@@ -31,4 +31,11 @@ public class DoctorProfile {
 
     @Column(name = "bio")
     private String bio;
+
+    /**
+     * Lịch làm việc / khung giờ làm việc (US14.2)
+     * Ví dụ: "T2-T6 08:00-17:00; T7 08:00-11:00".
+     */
+    @Column(name = "working_schedule")
+    private String workingSchedule;
 }
