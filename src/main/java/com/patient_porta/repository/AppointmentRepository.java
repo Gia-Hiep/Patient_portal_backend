@@ -43,4 +43,26 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     // nếu bạn vẫn cần lọc theo status enum (khuyên dùng enum thay vì String)
     // List<Appointment> findByStatus(Appointment.Status status);
+               // ================= DOCTOR – Dashboard (US9) =================
+
+    List<Appointment> findByDoctor_UserIdAndScheduledAtBetweenOrderByScheduledAtAsc(
+            Long doctorUserId,
+            LocalDateTime start,
+            LocalDateTime end
+    );
+
+    List<Appointment> findByDoctor_UserIdAndScheduledAtBetweenAndStatusInOrderByScheduledAtAsc(
+            Long doctorUserId,
+            LocalDateTime start,
+            LocalDateTime end,
+            List<Appointment.Status> statuses
+    );
+
+    // ================= PATIENT =================
+
+    List<Appointment> findByPatient_User_IdOrderByScheduledAtDesc(Long userId);
+
+    Optional<Appointment> findByIdAndPatient_User_Id(Long appointmentId, Long userId);
+
+    Optional<Appointment> findTopByPatient_User_IdOrderByScheduledAtDesc(Long userId);
 }
