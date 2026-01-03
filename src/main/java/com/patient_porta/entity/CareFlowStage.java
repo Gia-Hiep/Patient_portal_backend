@@ -2,13 +2,16 @@
 package com.patient_porta.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
+@AllArgsConstructor
 @Entity
 @Table(name = "care_flow_stages")
 @Data
+@NoArgsConstructor
 public class CareFlowStage {
 
     @Id
@@ -29,4 +32,10 @@ public class CareFlowStage {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public CareFlowStage(Long id, Integer stageOrder, String stageName) {
+        this.id = id;
+        this.stageOrder = stageOrder;
+        this.stageName = stageName;
+    }
 }

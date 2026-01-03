@@ -3,6 +3,7 @@ package com.patient_porta.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -15,21 +16,19 @@ public class ProcessLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "appointment_id", nullable = false)
-    private Long appointmentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointment_id", nullable = false)
+    private Appointment appointment;
 
-    @Column(name = "stage_name", nullable = false, length = 255)
-    private String stageName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stage_id", nullable = false)
+    private CareFlowStage stage;   // ✅ CÓ FIELD NÀY THÌ MỚI CÓ setStage()
 
-    @Column(name = "old_status")
-    private String oldStatus;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_by", nullable = false)
+    private User updatedBy;
 
-    @Column(name = "new_status")
-    private String newStatus;
-
-    @Column(name = "updated_by")
-    private Long updatedBy; // doctor_id
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 }

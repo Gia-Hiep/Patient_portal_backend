@@ -29,6 +29,9 @@ public class PatientProfile {
     @Enumerated(EnumType.STRING)
     private Sex sex;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     @Column(name = "address")
     private String address;
 
@@ -44,4 +47,5 @@ public class PatientProfile {
     public enum Sex {
         M, F, O
     }
+
 }
