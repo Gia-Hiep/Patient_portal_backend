@@ -58,11 +58,4 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             List<Appointment.Status> statuses
     );
 
-    // ================= PATIENT =================
-
-    List<Appointment> findByPatient_User_IdOrderByScheduledAtDesc(Long userId);
-
-    Optional<Appointment> findByIdAndPatient_User_Id(Long appointmentId, Long userId);
-
-    Optional<Appointment> findTopByPatient_User_IdOrderByScheduledAtDesc(Long userId);
 }
