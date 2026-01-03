@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "2399df54-dbed-4d00-840d-06ba2a64b931",
+		"name": "SCRUM49-TestAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51002626",
+		"_collection_link": "https://nguyyenhuy456-5859519.postman.co/workspace/Nguy%E1%BB%85n-%C4%90%E1%BB%A9c-Huy-CNTTK45A_'s-Work~e5ee9a53-ffff-4e0c-8fb2-2c893c8a5a7d/collection/51002626-2399df54-dbed-4d00-840d-06ba2a64b931?action=share&source=collection_link&creator=51002626"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login patient thành công\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Lưu token patient\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.environment.set(\"token_patient\", json.token);\r",
+							"    pm.environment.set(\"token\", json.token); // dùng chung cho các request sau\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"vanhai12@gmail.com\",\r\n  \"password\": \"vanhai1108\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET care flow process",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Có appointmentId\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json).to.have.property('appointmentId');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Có field stages là array\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.stages).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Có stage Đang chờ (màu vàng)\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    var waiting = json.stages.find(s => s.status === 'WAITING');\r",
+							"    pm.expect(waiting).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Có stage Hoàn thành (màu xanh)\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    var completed = json.stages.find(s => s.status === 'DONE');\r",
+							"    pm.expect(completed).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Có stage Chưa Khám(màu xám)\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    var not_started = json.stages.find(s => s.status === 'NOT_STARTED');\r",
+							"    pm.expect(not_started).to.exist;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"process"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET care flow process no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"No token → Phải bị 401 Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response có code UNAUTHORIZED\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.code).to.eql(\"UNAUTHORIZED\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Có message xác thực\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.message).to.be.a('string');\r",
+							"    pm.expect(json.message.toLowerCase()).to.include('auth');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"process"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

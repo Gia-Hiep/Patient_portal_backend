@@ -1,7 +1,8 @@
+
 package com.patient_porta.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+        import lombok.Data;
 
 import java.time.LocalDateTime;
 
@@ -39,6 +40,9 @@ public class Appointment {
     private String notes;
 
     public enum Status {
-        REQUESTED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW
+        REQUESTED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW, IN_PROGRESS
     }
+
+    @Column(name = "current_stage_id")
+    private Long currentStageId;
 }
