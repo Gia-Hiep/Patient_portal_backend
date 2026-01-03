@@ -54,4 +54,5 @@ public class User {
     @Column(name = "auto_notification_enabled", nullable = false)
     private boolean autoNotificationEnabled = true;
 
+
 }
