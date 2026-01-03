@@ -23,7 +23,7 @@ public class ExaminationProgressService {
     // =====================================================
     @Transactional
     public void updateStageByPatient(
-            Long patientId,
+            Long patientId,   // patientId ở đây là userId của bệnh nhân
             Long stageId,
             User doctor
     ) {
@@ -36,7 +36,8 @@ public class ExaminationProgressService {
         }
 
         Appointment appt = appointmentRepo
-                .findTopByPatientIdOrderByScheduledAtDesc(patientId);
+                .findTopByPatient_UserIdOrderByScheduledAtDesc(patientId)
+                .orElse(null);
 
         if (appt == null) {
             throw new RuntimeException("Bệnh nhân chưa có lịch khám.");
@@ -60,19 +61,20 @@ public class ExaminationProgressService {
     // =====================================================
     public List<Map<String, Object>> getPatientsForDoctor(Long doctorId) {
 
+        // doctorId ở đây là userId của bác sĩ
         List<Appointment> appointments =
-                appointmentRepo.findByDoctorIdOrderByScheduledAtAsc(doctorId);
+                appointmentRepo.findByDoctor_UserIdOrderByScheduledAtAsc(doctorId);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
         for (Appointment appt : appointments) {
 
             PatientProfile profile =
-                    patientProfileRepo.findById(appt.getPatientId()).orElse(null);
+                    patientProfileRepo.findById(appt.getPatient().getUserId()).orElse(null);
 
             Map<String, Object> row = new HashMap<>();
             row.put("appointmentId", appt.getId());
-            row.put("patientId", appt.getPatientId());
+            row.put("patientId", appt.getPatient().getUserId());
             row.put("fullName", profile != null ? profile.getFullName() : "Chưa cập nhật");
             row.put("avatar", "/default-avatar.png");
             row.put("currentStageId", appt.getCurrentStageId());
@@ -96,7 +98,7 @@ public class ExaminationProgressService {
 
         if (currentStageId != null) {
             currentStageOrder = stages.stream()
-                    .filter(s -> s.getId().equals(currentStageId))
+                    .filter(s -> Objects.equals(s.getId(), currentStageId))
                     .map(CareFlowStage::getStageOrder)
                     .findFirst()
                     .orElse(null);

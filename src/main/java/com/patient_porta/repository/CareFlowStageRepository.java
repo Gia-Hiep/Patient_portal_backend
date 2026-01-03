@@ -10,4 +10,6 @@ public interface CareFlowStageRepository extends JpaRepository<CareFlowStage, Lo
 
 
     List<CareFlowStage> findAllByOrderByStageOrderAsc();
+    List<CareFlowStage> findByAppointmentIdOrderByStageOrder(Long appointmentId);
+
 }

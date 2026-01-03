@@ -1,0 +1,152 @@
+{
+	"id": "4c86c205-12f0-4f51-a043-b4a90ed8c468",
+	"name": "TestAPI_US9 doctor no patient",
+	"timestamp": "2025-12-30T02:51:54.938Z",
+	"collection_id": "51002626-b370dc0a-125e-4bb0-99cd-b126c02eb251",
+	"folder_id": 0,
+	"environment_id": "51002626-94dd01dd-966b-4ce4-a6b1-8fb5e39f9478",
+	"totalPass": 6,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-12-30T02:51:54.020Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "c19eec2d-283b-4830-a786-7628ce9fb287",
+			"name": "Get Doctor 02 Appointments",
+			"url": "http://localhost:8080/api/doctor/appointments",
+			"time": 131,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Bác sĩ không có bệnh nhân - Status 200 OK": true,
+				"Response là một array": true,
+				"Array rỗng - Không có lịch khám nào": true,
+				"Response không có lỗi hoặc dữ liệu bất ngờ": true
+			},
+			"testPassFailCounts": {
+				"Bác sĩ không có bệnh nhân - Status 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response là một array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Array rỗng - Không có lịch khám nào": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response không có lỗi hoặc dữ liệu bất ngờ": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				131
+			],
+			"allTests": [
+				{
+					"Bác sĩ không có bệnh nhân - Status 200 OK": true,
+					"Response là một array": true,
+					"Array rỗng - Không có lịch khám nào": true,
+					"Response không có lỗi hoặc dữ liệu bất ngờ": true
+				}
+			]
+		},
+		{
+			"id": "bb030985-8f50-419f-b786-2d206f69a1d5",
+			"name": "Login doctor2",
+			"url": "http://localhost:8080/api/auth/login",
+			"time": 73,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login doctor thành công": true,
+				"Lưu token doctor": true
+			},
+			"testPassFailCounts": {
+				"Login doctor thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Lưu token doctor": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				73
+			],
+			"allTests": [
+				{
+					"Login doctor thành công": true,
+					"Lưu token doctor": true
+				}
+			]
+		},
+		{
+			"id": "2219dc4b-a482-4241-9f0c-bdbc5dba0ef3",
+			"name": "Scrum87 with doctor02",
+			"url": "http://localhost:8080/api/doctor/appointments?status=WAITING",
+			"time": 24,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				24
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "bb33463d-bf88-4b97-9206-665780173bb8",
+			"name": "Scrum88 with doctor02",
+			"url": "http://localhost:8080/api/doctor/appointments?date=2025-12-28",
+			"time": 23,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				23
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 251,
+	"collection": {
+		"requests": [
+			{
+				"id": "c19eec2d-283b-4830-a786-7628ce9fb287",
+				"method": "GET"
+			},
+			{
+				"id": "bb030985-8f50-419f-b786-2d206f69a1d5",
+				"method": "POST"
+			},
+			{
+				"id": "2219dc4b-a482-4241-9f0c-bdbc5dba0ef3",
+				"method": "GET"
+			},
+			{
+				"id": "bb33463d-bf88-4b97-9206-665780173bb8",
+				"method": "GET"
+			}
+		]
+	}
+}

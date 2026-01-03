@@ -1,13 +1,14 @@
 package com.patient_porta.controller;
 
 import com.patient_porta.dto.NotificationDTO;
+import com.patient_porta.entity.Notification;
 import com.patient_porta.entity.User;
+import com.patient_porta.repository.NotificationRepository;
 import com.patient_porta.repository.UserRepository;
 import com.patient_porta.service.JwtService;
 import com.patient_porta.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -21,33 +22,28 @@ public class NotificationController {
     private final NotificationService notificationService;
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
     // =========================
     // HELPER: LẤY USER TỪ JWT
     // =========================
-    private User getUserFromToken(String authHeader) {
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new RuntimeException("Invalid Authorization header");
-        }
-
-        String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
+    private User getUser(String token) {
+        String username = jwtService.extractUsername(token.substring(7));
 
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     // =========================
-    // GET ALL NOTIFICATIONS (PATIENT)
+    // GET ALL NOTIFICATIONS
     // =========================
     @GetMapping
     public List<NotificationDTO> getAll(
-            @RequestHeader("Authorization") String authHeader
+            @RequestHeader("Authorization") String token
     ) {
-        User user = getUserFromToken(authHeader);
+        User user = getUser(token);
 
-        // ⛔ user tắt auto notification
+        // ⛔ Nếu user tắt auto notification → không trả gì
         if (!user.isAutoNotificationEnabled()) {
             return Collections.emptyList();
         }
@@ -60,73 +56,20 @@ public class NotificationController {
     // =========================
     @PutMapping("/{id}/read")
     public ResponseEntity<?> markRead(
-            @RequestHeader("Authorization") String authHeader,
+            @RequestHeader("Authorization") String token,
             @PathVariable Long id
     ) {
-        User user = getUserFromToken(authHeader);
+        User user = getUser(token);
 
-        // 🔐 đảm bảo không đọc notification của người khác
-        notificationService.markAsReadSecure(id, user.getId());
+        Notification notification = notificationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
 
-        return ResponseEntity.ok().build();
-    }
-
-    // =========================
-    // SEND NOTIFICATION (US12)
-    // =========================
-    @PostMapping("/send")
-    @PreAuthorize("hasAnyRole('DOCTOR','LAB_STAFF')")
-    public ResponseEntity<?> sendNotification(
-            @RequestBody NotificationDTO dto
-    ) {
-        if (dto.getPatientId() == null) {
-            return ResponseEntity.badRequest()
-                    .body("patientId is required");
+        // ⛔ Bảo mật: không cho đọc notification của người khác
+        if (!notification.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(403).build();
         }
 
-        notificationService.sendLabResultNotification(
-                dto.getPatientId(),
-                dto.getBody()
-        );
-
-        return ResponseEntity.ok().build();
-    }
-
-    // ====================================================
-    // 🔥 BỔ SUNG – GET SETTING AUTO NOTIFICATION
-    // ====================================================
-    @GetMapping("/setting")
-    public ResponseEntity<?> getAutoNotificationSetting(
-            @RequestHeader("Authorization") String authHeader
-    ) {
-        User user = getUserFromToken(authHeader);
-
-        return ResponseEntity.ok(
-                Collections.singletonMap(
-                        "enabled",
-                        user.isAutoNotificationEnabled()
-                )
-        );
-    }
-
-    // ====================================================
-    // 🔥 BỔ SUNG – UPDATE SETTING → GHI DB
-    // ====================================================
-    @PutMapping("/setting")
-    public ResponseEntity<?> updateAutoNotificationSetting(
-            @RequestHeader("Authorization") String authHeader,
-            @RequestBody java.util.Map<String, Boolean> body
-    ) {
-        User user = getUserFromToken(authHeader);
-
-        Boolean enabled = body.get("enabled");
-        if (enabled == null) {
-            return ResponseEntity.badRequest().body("enabled is required");
-        }
-
-        user.setAutoNotificationEnabled(enabled);
-        userRepository.save(user); // ✅ GHI DB
-
+        notificationService.markAsRead(id);
         return ResponseEntity.ok().build();
     }
 }
