@@ -40,7 +40,7 @@ public class Appointment {
     private String notes;
 
     public enum Status {
-        REQUESTED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW, IN_PROGRESS
+        REQUESTED, CONFIRMED, CANCELLED, COMPLETED, NO_SHOW, IN_PROGRESS, WAITING
     }
 
     @Column(name = "current_stage_id")

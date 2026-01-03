@@ -11,8 +11,8 @@ import com.patient_porta.repository.ProcessLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,17 +27,18 @@ public class LabResultService {
     // =============================
     public List<LabResultPatientDTO> getPatientsWithLabResult() {
 
-        return appointmentRepository.findByStatus("COMPLETED")
+        return appointmentRepository
+                .findByStatus(Appointment.Status.COMPLETED) // ✅ enum
                 .stream()
                 .map(a -> {
                     PatientProfile profile = patientProfileRepository
-                            .findByUserId(a.getPatientId())
+                            .findById(a.getPatient().getUserId()) // ✅ PK = userId
                             .orElse(null);
 
                     if (profile == null) return null;
 
                     LabResultPatientDTO dto = new LabResultPatientDTO();
-                    dto.setPatientId(a.getPatientId());
+                    dto.setPatientId(profile.getUserId());
                     dto.setFullName(profile.getFullName());
                     dto.setStatus("DONE");
 
@@ -50,19 +51,17 @@ public class LabResultService {
     // =============================
     // Chi tiết kết quả xét nghiệm
     // =============================
-    public LabResultDetailDTO getLabResultDetail(Long patientId) {
+    public LabResultDetailDTO getLabResultDetail(Long patientUserId) {
 
         PatientProfile profile = patientProfileRepository
-                .findByUserId(patientId)
+                .findById(patientUserId)
                 .orElseThrow(() ->
                         new RuntimeException("Không tìm thấy hồ sơ bệnh nhân"));
 
         Appointment appt = appointmentRepository
-                .findTopByPatientIdOrderByScheduledAtDesc(patientId);
-
-        if (appt == null) {
-            throw new RuntimeException("Không tìm thấy lịch hẹn");
-        }
+                .findTopByPatient_UserIdOrderByScheduledAtDesc(patientUserId)
+                .orElseThrow(() ->
+                        new RuntimeException("Không tìm thấy lịch hẹn"));
 
         ProcessLog log = processLogRepository
                 .findTopByAppointmentIdOrderByCreatedAtDesc(appt.getId())
@@ -70,12 +69,10 @@ public class LabResultService {
                         new RuntimeException("Chưa có kết quả xét nghiệm"));
 
         LabResultDetailDTO dto = new LabResultDetailDTO();
-        dto.setPatientId(patientId);
+        dto.setPatientId(patientUserId);
         dto.setFullName(profile.getFullName());
 
-        // ✅ TÓM TẮT DỰA TRÊN STATUS
         dto.setSummary("Xét nghiệm đã hoàn tất");
-
         dto.setCompletedDate(log.getCreatedAt());
 
         return dto;

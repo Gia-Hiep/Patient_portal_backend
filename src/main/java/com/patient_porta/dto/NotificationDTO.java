@@ -11,7 +11,7 @@ public class NotificationDTO {
     private String status;
     private LocalDateTime createdAt;
     private boolean readFlag;
-
+    private Long patientId;
 }
 
 
