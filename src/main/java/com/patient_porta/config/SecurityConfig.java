@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +52,18 @@ public class SecurityConfig {
     }
 
     @Bean
+    AccessDeniedHandler restAccessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setStatus(403);
+            response.setContentType("application/json;charset=UTF-8");
+            Map<String, Object> body = new HashMap<>();
+            body.put("code", "FORBIDDEN");
+            body.put("message", "Bạn không có quyền truy cập chức năng này.");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+        };
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // ======================
@@ -63,8 +76,10 @@ public class SecurityConfig {
                 // ======================
                 // EXCEPTION
                 // ======================
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(restAuthenticationEntryPoint()))
-
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(restAuthenticationEntryPoint())
+                        .accessDeniedHandler(restAccessDeniedHandler())
+                )
                 // ======================
                 // AUTHORIZATION
                 // ======================
@@ -93,7 +108,8 @@ public class SecurityConfig {
 
                         // 🔔 NOTIFICATION
                         .requestMatchers("/api/autonotification/**").authenticated()
-
+                        .requestMatchers("/api/announcements/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // FALLBACK
                         .anyRequest().authenticated()
                 )
@@ -110,11 +126,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-
-        // Cho phép tất cả origin dạng http://localhost:xxxx
         cfg.setAllowedOriginPatterns(Arrays.asList("http://localhost:*"));
         cfg.setExposedHeaders(Arrays.asList("Content-Disposition", "Content-Type", "Content-Length"));
-        cfg.setExposedHeaders(Arrays.asList("Content-Disposition"));
 
         cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         cfg.setAllowedHeaders(Arrays.asList("*"));

@@ -48,8 +48,9 @@ public class VisitService {
             );
         }
 
+        // ✅ patient PK = userId
         List<Appointment> visits =
-                appointmentRepository.findByPatient_User_IdOrderByScheduledAtDesc(user.getId());
+                appointmentRepository.findByPatient_UserIdOrderByScheduledAtDesc(user.getId());
 
         return visits.stream()
                 .map(this::toSummaryDTO)
@@ -65,8 +66,9 @@ public class VisitService {
             );
         }
 
+        // ✅ patient PK = userId
         Appointment appt = appointmentRepository
-                .findByIdAndPatient_User_Id(visitId, user.getId())
+                .findByIdAndPatient_UserId(visitId, user.getId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.FORBIDDEN,
                         "Truy cập bị từ chối."
