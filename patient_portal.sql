@@ -1,5 +1,5 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
@@ -106,10 +106,16 @@ CREATE TABLE IF NOT EXISTS `care_flow_stages` (
 --
 
 INSERT INTO `care_flow_stages` (`id`, `appointment_id`, `stage_order`, `stage_name`, `status`, `updated_at`) VALUES
-(1, 1, 1, 'Khám tổng quát', 'DONE', '2025-11-30 03:19:48'),
-(2, 1, 2, 'Xét nghiệm máu', 'WAITING', '2025-11-30 03:19:48'),
-(3, 1, 3, 'Tai - Mũi - Họng', 'NOT_STARTED', '2025-11-30 03:19:48'),
-(4, 1, 4, 'Siêu âm bụng', 'NOT_STARTED', '2025-11-30 03:19:48');
+(1, 1, 1, 'Tiếp nhận', 'DONE', '2025-11-30 01:51:24'),
+(2, 1, 2, 'Khám lâm sàng', 'DONE', '2025-11-30 01:51:24'),
+(3, 1, 3, 'Xét nghiệm', 'DONE', '2025-11-30 01:51:24'),
+(4, 1, 4, 'Trả kết quả', 'DONE', '2025-11-30 01:51:24'),
+(5, 2, 1, 'Tiếp nhận', 'DONE', '2025-11-30 01:51:24'),
+(6, 2, 2, 'Xét nghiệm máu', 'DONE', '2025-11-30 01:51:24'),
+(7, 2, 3, 'Trả kết quả', 'DONE', '2025-11-30 01:51:24'),
+(8, 3, 1, 'Tiếp nhận', 'DONE', '2025-11-30 01:51:24'),
+(9, 3, 2, 'Chụp X-quang', 'DONE', '2025-11-30 01:51:24'),
+(10, 3, 3, 'Trả kết quả', 'DONE', '2025-11-30 01:51:24');
 
 -- --------------------------------------------------------
 
@@ -133,7 +139,8 @@ CREATE TABLE IF NOT EXISTS `doctor_profiles` (
 --
 
 INSERT INTO `doctor_profiles` (`user_id`, `full_name`, `specialty`, `department`, `license_no`, `bio`) VALUES
-(3, 'BS. Lê Văn C', 'Nội tổng quát', 'Khám tổng quát', NULL, NULL);
+(3, 'BS. Lê Văn C', 'Nội tổng quát', 'Khám tổng quát', NULL, NULL),
+(11, 'ASDASDSA', 'DSADSADS', 'DSADSADSA', 'DASDSA', 'DSADSA');
 
 -- --------------------------------------------------------
 
