@@ -1,18 +1,17 @@
 package com.patient_porta.dto;
 
-import lombok.Data;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
-/**
- * DTO trả về cho patient xem thông báo.
- */
-@Data
+@Data @Builder
 public class NotificationDTO {
-
     private Long id;
     private String title;
-    private String content;
-    private LocalDateTime postedAt;
-    private String postedBy;
+    private String body;
+    private String status;
+    private LocalDateTime createdAt;
+    private boolean readFlag;
+    private Long patientId;
 }
+
+

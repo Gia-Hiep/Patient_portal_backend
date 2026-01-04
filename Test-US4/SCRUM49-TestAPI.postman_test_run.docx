@@ -1,0 +1,163 @@
+{
+	"id": "16e86044-c18b-4d6f-bc1c-d8fb28831d6d",
+	"name": "SCRUM49-TestAPI",
+	"timestamp": "2025-12-30T07:56:09.210Z",
+	"collection_id": "51002626-2399df54-dbed-4d00-840d-06ba2a64b931",
+	"folder_id": 0,
+	"environment_id": "51002626-94dd01dd-966b-4ce4-a6b1-8fb5e39f9478",
+	"totalPass": 11,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-12-30T07:56:08.525Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "534d180d-4b63-4863-ab02-dc0b77717e7d",
+			"name": "Login",
+			"url": "http://localhost:8080/api/auth/login",
+			"time": 93,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login patient thành công": true,
+				"Lưu token patient": true
+			},
+			"testPassFailCounts": {
+				"Login patient thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Lưu token patient": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				93
+			],
+			"allTests": [
+				{
+					"Login patient thành công": true,
+					"Lưu token patient": true
+				}
+			]
+		},
+		{
+			"id": "a4db2db6-1ba6-4dd5-9e2d-df4083f02f99",
+			"name": "GET care flow process",
+			"url": "http://localhost:8080/api/process",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200 OK": true,
+				"Có appointmentId": true,
+				"Có field stages là array": true,
+				"Có stage Đang chờ (màu vàng)": true,
+				"Có stage Hoàn thành (màu xanh)": true,
+				"Có stage Chưa Khám(màu xám)": true
+			},
+			"testPassFailCounts": {
+				"Status 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Có appointmentId": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Có field stages là array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Có stage Đang chờ (màu vàng)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Có stage Hoàn thành (màu xanh)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Có stage Chưa Khám(màu xám)": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status 200 OK": true,
+					"Có appointmentId": true,
+					"Có field stages là array": true,
+					"Có stage Đang chờ (màu vàng)": true,
+					"Có stage Hoàn thành (màu xanh)": true,
+					"Có stage Chưa Khám(màu xám)": true
+				}
+			]
+		},
+		{
+			"id": "f5d35099-e1ce-4ed3-a767-a5c8cd18b36b",
+			"name": "GET care flow process no token",
+			"url": "http://localhost:8080/api/process",
+			"time": 3,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"No token → Phải bị 401 Unauthorized": true,
+				"Response có code UNAUTHORIZED": true,
+				"Có message xác thực": true
+			},
+			"testPassFailCounts": {
+				"No token → Phải bị 401 Unauthorized": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response có code UNAUTHORIZED": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Có message xác thực": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"No token → Phải bị 401 Unauthorized": true,
+					"Response có code UNAUTHORIZED": true,
+					"Có message xác thực": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 110,
+	"collection": {
+		"requests": [
+			{
+				"id": "534d180d-4b63-4863-ab02-dc0b77717e7d",
+				"method": "POST"
+			},
+			{
+				"id": "a4db2db6-1ba6-4dd5-9e2d-df4083f02f99",
+				"method": "GET"
+			},
+			{
+				"id": "f5d35099-e1ce-4ed3-a767-a5c8cd18b36b",
+				"method": "GET"
+			}
+		]
+	}
+}

@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "a8f282e7-b8b9-4e3b-a8e6-4a0880bbcb29",
+		"name": "TestAPI-SCRUM56",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51002626",
+		"_collection_link": "https://nguyyenhuy456-5859519.postman.co/workspace/Nguy%E1%BB%85n-%C4%90%E1%BB%A9c-Huy-CNTTK45A_'s-Work~e5ee9a53-ffff-4e0c-8fb2-2c893c8a5a7d/collection/51002626-a8f282e7-b8b9-4e3b-a8e6-4a0880bbcb29?action=share&source=collection_link&creator=51002626"
+	},
+	"item": [
+		{
+			"name": "Login patient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login thành công - Status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response có token\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('token');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Lưu token vào biến môi trường\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"token\", jsonData.token);\r",
+							"    console.log(\"Token đã lưu:\", jsonData.token);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response có thông tin user\", function () {\r",
+							"    var jsonData = pm.response.json().user;\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('username');\r",
+							"    pm.expect(jsonData).to.have.property('role');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"hiepcc22\",\r\n  \"password\": \"anhhiepdz\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Notifications",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Lấy danh sách thông báo thành công - Status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response là một array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Nếu có thông báo thì cấu trúc đúng\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    if (jsonData.length > 0) {\r",
+							"        pm.expect(jsonData[0]).to.have.property('id');\r",
+							"        pm.expect(jsonData[0]).to.have.property('userId');\r",
+							"        pm.expect(jsonData[0]).to.have.property('type');\r",
+							"        pm.expect(jsonData[0]).to.have.property('title');\r",
+							"        pm.expect(jsonData[0]).to.have.property('status');\r",
+							"        pm.expect(jsonData[0]).to.have.property('createdAt');\r",
+							"        pm.expect(jsonData[0]).to.have.property('relatedType');\r",
+							"        pm.expect(jsonData[0]).to.have.property('relatedId');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Notifications-no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Không có token phải bị 401 Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message lỗi xác thực\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.include('authentication');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
