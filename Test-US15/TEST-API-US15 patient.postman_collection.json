@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "8ac31ae9-53a0-40db-81f3-146a49b6f467",
+		"name": "TEST-API-US15 patient",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51002626",
+		"_collection_link": "https://nguyyenhuy456-5859519.postman.co/workspace/Nguy%E1%BB%85n-%C4%90%E1%BB%A9c-Huy-CNTTK45A_'s-Work~e5ee9a53-ffff-4e0c-8fb2-2c893c8a5a7d/collection/51002626-8ac31ae9-53a0-40db-81f3-146a49b6f467?action=share&source=collection_link&creator=51002626"
+	},
+	"item": [
+		{
+			"name": "Login patient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login admin thành công\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Lưu token admin\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.environment.set(\"token_patient\", json.token);\r",
+							"    console.log(\"Token admin lưu: \" + json.token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"patient01@example.com\",\r\n  \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all announcements",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Lấy danh sách thông báo thành công\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response là array\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Sắp xếp theo thời gian mới nhất\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    if (json.length > 1) {\r",
+							"        pm.expect(new Date(json[0].createdAt) >= new Date(json[1].createdAt)).to.be.true;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/announcements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"announcements"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token_patient}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

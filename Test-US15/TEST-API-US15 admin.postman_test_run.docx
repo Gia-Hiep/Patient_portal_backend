@@ -1,0 +1,350 @@
+{
+	"id": "b6846997-ffc8-4de1-a0e9-c3f376832bd6",
+	"name": "TEST-API-US15 admin",
+	"timestamp": "2026-01-04T10:56:40.466Z",
+	"collection_id": "51002626-785f410c-02db-49c0-9649-5e2d6f58341c",
+	"folder_id": 0,
+	"environment_id": "51002626-94dd01dd-966b-4ce4-a6b1-8fb5e39f9478",
+	"totalPass": 12,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-01-04T10:56:38.752Z",
+	"totalFail": 1,
+	"results": [
+		{
+			"id": "0e939c07-872a-4d9d-9aa3-087ce6764366",
+			"name": "Login",
+			"url": "http://localhost:8080/api/auth/login",
+			"time": 80,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login admin thành công": true,
+				"Lưu token admin": true
+			},
+			"testPassFailCounts": {
+				"Login admin thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Lưu token admin": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				80
+			],
+			"allTests": [
+				{
+					"Login admin thành công": true,
+					"Lưu token admin": true
+				}
+			]
+		},
+		{
+			"id": "a9e7197c-afb9-4ae2-97db-a83c5f02fdf5",
+			"name": "Get all announcements",
+			"url": "http://localhost:8080/api/announcements",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Lấy danh sách thông báo thành công": true,
+				"Response là array": true,
+				"Sắp xếp theo thời gian mới nhất": true
+			},
+			"testPassFailCounts": {
+				"Lấy danh sách thông báo thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response là array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Sắp xếp theo thời gian mới nhất": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Lấy danh sách thông báo thành công": true,
+					"Response là array": true,
+					"Sắp xếp theo thời gian mới nhất": true
+				}
+			]
+		},
+		{
+			"id": "d977a4b9-414b-40f6-8c94-23ddfb462a68",
+			"name": "Create announcement",
+			"url": "http://localhost:8080/api/admin/announcements",
+			"time": 26,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Tạo thông báo thành công": true
+			},
+			"testPassFailCounts": {
+				"Tạo thông báo thành công": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				26
+			],
+			"allTests": [
+				{
+					"Tạo thông báo thành công": true
+				}
+			]
+		},
+		{
+			"id": "5ce84578-a2d1-4f3c-80f9-9895e99bfc02",
+			"name": "Delete announcements",
+			"url": "http://localhost:8080/api/admin/announcements/19",
+			"time": 14,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Xóa thông báo thành công": false
+			},
+			"testPassFailCounts": {
+				"Xóa thông báo thành công": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Xóa thông báo thành công": false
+				}
+			]
+		},
+		{
+			"id": "d41dd734-b6dc-4d9f-911c-d27a6ebd04a7",
+			"name": "Create with no type",
+			"url": "http://localhost:8080/api/admin/announcements",
+			"time": 12,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Tạo thông báo không thành công khi không có type": true
+			},
+			"testPassFailCounts": {
+				"Tạo thông báo không thành công khi không có type": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Tạo thông báo không thành công khi không có type": true
+				}
+			]
+		},
+		{
+			"id": "aae31fd0-c7e5-4c6d-8b76-50d05958c450",
+			"name": "Create with no title",
+			"url": "http://localhost:8080/api/admin/announcements",
+			"time": 35,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Tạo thông báo không thành công khi không có title": true
+			},
+			"testPassFailCounts": {
+				"Tạo thông báo không thành công khi không có title": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				35
+			],
+			"allTests": [
+				{
+					"Tạo thông báo không thành công khi không có title": true
+				}
+			]
+		},
+		{
+			"id": "5e8554a4-fd3e-4539-9a08-858b689627ea",
+			"name": "Create with no content",
+			"url": "http://localhost:8080/api/admin/announcements",
+			"time": 21,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Tạo thông báo không thành công khi không có content": true
+			},
+			"testPassFailCounts": {
+				"Tạo thông báo không thành công khi không có content": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				21
+			],
+			"allTests": [
+				{
+					"Tạo thông báo không thành công khi không có content": true
+				}
+			]
+		},
+		{
+			"id": "a0a59d61-aa5b-4c12-9407-554a373bd223",
+			"name": "Delete announcement sai id",
+			"url": "http://localhost:8080/api/admin/announcements/13",
+			"time": 28,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Không tìm thấy thông báo để xóa": true
+			},
+			"testPassFailCounts": {
+				"Không tìm thấy thông báo để xóa": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				28
+			],
+			"allTests": [
+				{
+					"Không tìm thấy thông báo để xóa": true
+				}
+			]
+		},
+		{
+			"id": "2d2b2928-d7c7-4254-a826-8f7a29431d1f",
+			"name": "Put announcements",
+			"url": "http://localhost:8080/api/admin/announcements/3",
+			"time": 29,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Cập nhập thành công thông báo theo id": true
+			},
+			"testPassFailCounts": {
+				"Cập nhập thành công thông báo theo id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				29
+			],
+			"allTests": [
+				{
+					"Cập nhập thành công thông báo theo id": true
+				}
+			]
+		},
+		{
+			"id": "b50a10fc-e305-4443-9698-4f3d0aeb777e",
+			"name": "Put announcements sai id",
+			"url": "http://localhost:8080/api/admin/announcements/5",
+			"time": 14,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Không tìm thấy thông báo theo id để sửa": true
+			},
+			"testPassFailCounts": {
+				"Không tìm thấy thông báo theo id để sửa": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Không tìm thấy thông báo theo id để sửa": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 275,
+	"collection": {
+		"requests": [
+			{
+				"id": "0e939c07-872a-4d9d-9aa3-087ce6764366",
+				"method": "POST"
+			},
+			{
+				"id": "a9e7197c-afb9-4ae2-97db-a83c5f02fdf5",
+				"method": "GET"
+			},
+			{
+				"id": "d977a4b9-414b-40f6-8c94-23ddfb462a68",
+				"method": "POST"
+			},
+			{
+				"id": "5ce84578-a2d1-4f3c-80f9-9895e99bfc02",
+				"method": "DELETE"
+			},
+			{
+				"id": "d41dd734-b6dc-4d9f-911c-d27a6ebd04a7",
+				"method": "POST"
+			},
+			{
+				"id": "aae31fd0-c7e5-4c6d-8b76-50d05958c450",
+				"method": "POST"
+			},
+			{
+				"id": "5e8554a4-fd3e-4539-9a08-858b689627ea",
+				"method": "POST"
+			},
+			{
+				"id": "a0a59d61-aa5b-4c12-9407-554a373bd223",
+				"method": "DELETE"
+			},
+			{
+				"id": "2d2b2928-d7c7-4254-a826-8f7a29431d1f",
+				"method": "PUT"
+			},
+			{
+				"id": "b50a10fc-e305-4443-9698-4f3d0aeb777e",
+				"method": "PUT"
+			}
+		]
+	}
+}
