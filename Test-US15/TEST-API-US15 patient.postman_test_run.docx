@@ -1,0 +1,102 @@
+{
+	"id": "f3cf0de8-ad5f-4421-a5f2-f3c18c6875fe",
+	"name": "TEST-API-US15 patient",
+	"timestamp": "2026-01-04T11:01:28.008Z",
+	"collection_id": "51002626-8ac31ae9-53a0-40db-81f3-146a49b6f467",
+	"folder_id": 0,
+	"environment_id": "51002626-94dd01dd-966b-4ce4-a6b1-8fb5e39f9478",
+	"totalPass": 5,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-01-04T11:01:26.895Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "c099f521-263f-4c85-945b-ed862205afd1",
+			"name": "Login patient",
+			"url": "http://localhost:8080/api/auth/login",
+			"time": 81,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login admin thành công": true,
+				"Lưu token admin": true
+			},
+			"testPassFailCounts": {
+				"Login admin thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Lưu token admin": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				81
+			],
+			"allTests": [
+				{
+					"Login admin thành công": true,
+					"Lưu token admin": true
+				}
+			]
+		},
+		{
+			"id": "4444ff8d-8429-454c-aa4b-59f565da5eae",
+			"name": "Get all announcements",
+			"url": "http://localhost:8080/api/announcements",
+			"time": 31,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Lấy danh sách thông báo thành công": true,
+				"Response là array": true,
+				"Sắp xếp theo thời gian mới nhất": true
+			},
+			"testPassFailCounts": {
+				"Lấy danh sách thông báo thành công": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response là array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Sắp xếp theo thời gian mới nhất": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				31
+			],
+			"allTests": [
+				{
+					"Lấy danh sách thông báo thành công": true,
+					"Response là array": true,
+					"Sắp xếp theo thời gian mới nhất": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 112,
+	"collection": {
+		"requests": [
+			{
+				"id": "c099f521-263f-4c85-945b-ed862205afd1",
+				"method": "POST"
+			},
+			{
+				"id": "4444ff8d-8429-454c-aa4b-59f565da5eae",
+				"method": "GET"
+			}
+		]
+	}
+}
